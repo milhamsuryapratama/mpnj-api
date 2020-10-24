@@ -26,6 +26,7 @@ type KategoriUsecase interface {
 	Create(context.Context, *Kategori) error
 	GetByID(ctx context.Context, id int) (Kategori, error)
 	Update(kategori *Kategori, id int) (Kategori, error)
+	Delete(ctx context.Context, id int) error
 }
 
 // KategoriRepository ...
@@ -34,4 +35,5 @@ type KategoriRepository interface {
 	Create(ctx context.Context, k *Kategori) error
 	GetByID(ctx context.Context, id int) (Kategori, error)
 	Update(kategori *Kategori, id int) (Kategori, error)
+	Delete(ctx context.Context, id int) error
 }
