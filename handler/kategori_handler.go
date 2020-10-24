@@ -30,6 +30,7 @@ func KategoriHandlerFunc(r *gin.RouterGroup, kategori domain.KategoriUsecase) {
 	r.GET("/kategori", handler.GetKategori)
 	r.POST("/kategori", handler.CreateKategori)
 	r.GET("/kategori/:id", handler.GetByID)
+	r.PUT("/kategori/:id", handler.UpdateKategori)
 }
 
 // GetKategori ///
@@ -75,6 +76,35 @@ func (u *KategoriHandler) CreateKategori(c *gin.Context) {
 func (u *KategoriHandler) GetByID(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	kategori, err := u.KategoriUsecase.GetByID(c, id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "sukses",
+		"data":    kategori,
+	})
+}
+
+// UpdateKategori ...
+func (u *KategoriHandler) UpdateKategori(c *gin.Context) {
+	var kategori domain.Kategori
+	var err error
+	id, _ := strconv.Atoi(c.Param("id"))
+	err = c.ShouldBindJSON(&kategori)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+
+	kategori, err = u.KategoriUsecase.Update(&kategori, id)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": err.Error(),
