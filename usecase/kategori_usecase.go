@@ -26,3 +26,9 @@ func (k *KategoriUsecase) Get(c context.Context) (res []domain.Kategori, err err
 
 	return
 }
+
+// Create ...
+func (k *KategoriUsecase) Create(c context.Context, kategori *domain.Kategori) (err error) {
+	err = k.kategoriRepo.Create(c, kategori)
+	return
+}
