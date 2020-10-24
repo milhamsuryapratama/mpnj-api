@@ -49,3 +49,15 @@ func (c *KategoriRepository) Update(k *domain.Kategori, id int) (domain.Kategori
 	c.Conn.Save(&kategori)
 	return kategori, nil
 }
+
+// Delete ...
+func (c *KategoriRepository) Delete(ctx context.Context, id int) error {
+	var kategori domain.Kategori
+	err := c.Conn.First(&kategori, id).Error
+	if err != nil {
+		return err
+	}
+
+	c.Conn.Delete(&kategori, id)
+	return err
+}
