@@ -31,6 +31,7 @@ func KategoriHandlerFunc(r *gin.RouterGroup, kategori domain.KategoriUsecase) {
 	r.POST("/kategori", handler.CreateKategori)
 	r.GET("/kategori/:id", handler.GetByID)
 	r.PUT("/kategori/:id", handler.UpdateKategori)
+	r.DELETE("/kategori/:id", handler.DeleteKategori)
 }
 
 // GetKategori ///
@@ -116,5 +117,23 @@ func (u *KategoriHandler) UpdateKategori(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "sukses",
 		"data":    kategori,
+	})
+}
+
+// DeleteKategori ...
+func (u *KategoriHandler) DeleteKategori(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+
+	err := u.KategoriUsecase.Delete(c, id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "Sukses menghapus data",
 	})
 }
