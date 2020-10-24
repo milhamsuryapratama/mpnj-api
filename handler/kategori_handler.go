@@ -27,6 +27,7 @@ func KategoriHandlerFunc(r *gin.RouterGroup, kategori domain.KategoriUsecase) {
 	}
 
 	r.GET("/kategori", handler.GetKategori)
+	r.POST("/kategori", handler.CreateKategori)
 }
 
 // GetKategori ///
@@ -41,5 +42,29 @@ func (u *KategoriHandler) GetKategori(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "sukses",
 		"data":    listKategori,
+	})
+}
+
+// CreateKategori ...
+func (u *KategoriHandler) CreateKategori(c *gin.Context) {
+	var kategori domain.Kategori
+	var err error
+	err = c.ShouldBindJSON(&kategori)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+	}
+
+	err = u.KategoriUsecase.Create(c, &kategori)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+	}
+
+	c.JSON(201, gin.H{
+		"message": "sukses",
+		"data":    kategori,
 	})
 }
