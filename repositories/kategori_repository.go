@@ -29,3 +29,10 @@ func (c *KategoriRepository) Create(ctx context.Context, k *domain.Kategori) (er
 	err = c.Conn.Create(k).Error
 	return
 }
+
+// GetByID ...
+func (c *KategoriRepository) GetByID(ctx context.Context, id int) (domain.Kategori, error) {
+	var kategori domain.Kategori
+	m := c.Conn.First(&kategori, id).Error
+	return kategori, m
+}

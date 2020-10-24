@@ -32,3 +32,9 @@ func (k *KategoriUsecase) Create(c context.Context, kategori *domain.Kategori) (
 	err = k.kategoriRepo.Create(c, kategori)
 	return
 }
+
+// GetByID ...
+func (k *KategoriUsecase) GetByID(c context.Context, id int) (kategori domain.Kategori, err error) {
+	kategori, err = k.kategoriRepo.GetByID(c, id)
+	return
+}
