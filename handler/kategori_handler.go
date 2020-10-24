@@ -3,6 +3,7 @@ package handler
 import (
 	"mpnj-api/config"
 	"mpnj-api/domain"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
@@ -28,6 +29,7 @@ func KategoriHandlerFunc(r *gin.RouterGroup, kategori domain.KategoriUsecase) {
 
 	r.GET("/kategori", handler.GetKategori)
 	r.POST("/kategori", handler.CreateKategori)
+	r.GET("/kategori/:id", handler.GetByID)
 }
 
 // GetKategori ///
@@ -64,6 +66,24 @@ func (u *KategoriHandler) CreateKategori(c *gin.Context) {
 	}
 
 	c.JSON(201, gin.H{
+		"message": "sukses",
+		"data":    kategori,
+	})
+}
+
+// GetByID ...
+func (u *KategoriHandler) GetByID(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	kategori, err := u.KategoriUsecase.GetByID(c, id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{
 		"message": "sukses",
 		"data":    kategori,
 	})
