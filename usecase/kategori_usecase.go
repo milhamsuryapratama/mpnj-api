@@ -38,3 +38,15 @@ func (k *KategoriUsecase) GetByID(c context.Context, id int) (kategori domain.Ka
 	kategori, err = k.kategoriRepo.GetByID(c, id)
 	return
 }
+
+// Update ...
+func (k *KategoriUsecase) Update(kat *domain.Kategori, id int) (kategori domain.Kategori, err error) {
+	var ctx context.Context
+	kategori, err = k.kategoriRepo.GetByID(ctx, id)
+	if err != nil {
+		return kategori, err
+	}
+
+	kategori, err = k.kategoriRepo.Update(kat, id)
+	return
+}

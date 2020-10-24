@@ -36,3 +36,16 @@ func (c *KategoriRepository) GetByID(ctx context.Context, id int) (domain.Katego
 	m := c.Conn.First(&kategori, id).Error
 	return kategori, m
 }
+
+// Update ...
+func (c *KategoriRepository) Update(k *domain.Kategori, id int) (domain.Kategori, error) {
+	var kategori domain.Kategori
+	kat := c.Conn.First(&kategori, id)
+	if kat.Error != nil {
+		return kategori, kat.Error
+	}
+
+	kategori.NamaKategori = k.NamaKategori
+	c.Conn.Save(&kategori)
+	return kategori, nil
+}
