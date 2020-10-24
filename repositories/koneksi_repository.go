@@ -23,3 +23,9 @@ func (c *KategoriRepository) Get(ctx context.Context) (res []domain.Kategori, er
 	c.Conn.Find(&kategori)
 	return kategori, nil
 }
+
+// Create ...
+func (c *KategoriRepository) Create(ctx context.Context, k *domain.Kategori) (err error) {
+	err = c.Conn.Create(k).Error
+	return
+}
