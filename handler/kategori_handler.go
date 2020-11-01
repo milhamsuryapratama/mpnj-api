@@ -60,7 +60,7 @@ func (u *KategoriHandler) CreateKategori(c *gin.Context) {
 		})
 	}
 
-	err = u.KategoriUsecase.Create(c, &kategori)
+	kategori, err = u.KategoriUsecase.Create(c, &kategori)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": err.Error(),

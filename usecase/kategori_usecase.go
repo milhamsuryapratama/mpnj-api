@@ -28,8 +28,8 @@ func (k *KategoriUsecase) Get(c context.Context) (res []domain.Kategori, err err
 }
 
 // Create ...
-func (k *KategoriUsecase) Create(c context.Context, kategori *domain.Kategori) (err error) {
-	err = k.kategoriRepo.Create(c, kategori)
+func (k *KategoriUsecase) Create(c context.Context, kategori *domain.Kategori) (kat domain.Kategori, err error) {
+	kat, err = k.kategoriRepo.Create(c, kategori)
 	return
 }
 

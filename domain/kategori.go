@@ -28,7 +28,7 @@ func (Produk) TableName() string {
 // KategoriUsecase ...
 type KategoriUsecase interface {
 	Get(ctx context.Context) ([]Kategori, error)
-	Create(context.Context, *Kategori) error
+	Create(context.Context, *Kategori) (Kategori, error)
 	GetByID(ctx context.Context, id int) (Kategori, error)
 	Update(kategori *Kategori, id int) (Kategori, error)
 	Delete(ctx context.Context, id int) error
@@ -37,7 +37,7 @@ type KategoriUsecase interface {
 // KategoriRepository ...
 type KategoriRepository interface {
 	Get(ctx context.Context) (res []Kategori, err error)
-	Create(ctx context.Context, k *Kategori) error
+	Create(ctx context.Context, k *Kategori) (Kategori, error)
 	GetByID(ctx context.Context, id int) (Kategori, error)
 	Update(kategori *Kategori, id int) (Kategori, error)
 	Delete(ctx context.Context, id int) error
