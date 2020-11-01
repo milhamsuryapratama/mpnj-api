@@ -16,7 +16,12 @@ func main() {
 	kategoriRepo := repositories.NewKategoriRepository(db)
 	kategoriUsecase := usecase.NewKategoriUseCase(kategoriRepo)
 
+	produkRepo := repositories.NewProdukRepository(db)
+	produkUsecase := usecase.NewProdukUsecase(produkRepo)
+
 	api := r.Group("/api")
 	handler.KategoriHandlerFunc(api, kategoriUsecase)
+	handler.ProdukHandlerFunc(api, produkUsecase)
+
 	r.Run()
 }
