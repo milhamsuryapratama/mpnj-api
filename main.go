@@ -13,10 +13,10 @@ func main() {
 	r := gin.New()
 	db := config.Connect()
 
-	repo := repositories.NewKategoriRepository(db)
-	usecase := usecase.NewKategoriUseCase(repo)
+	kategoriRepo := repositories.NewKategoriRepository(db)
+	kategoriUsecase := usecase.NewKategoriUseCase(kategoriRepo)
 
 	api := r.Group("/api")
-	handler.KategoriHandlerFunc(api, usecase)
+	handler.KategoriHandlerFunc(api, kategoriUsecase)
 	r.Run()
 }
