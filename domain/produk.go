@@ -23,4 +23,11 @@ type Produk struct {
 	Kategori         Kategori `gorm:"foreignKey:kategori_produk_id" tag:"kategori" json:"kategori"`
 	Status           string   `tag:"status" form:"status" json:"status"`
 }
+// ProdukUsecase ...
+type ProdukUsecase interface {
+	Get(ctx context.Context) ([]Produk, error)
+}
+// ProdukRepository ...
+type ProdukRepository interface {
+	Get(ctx context.Context) (res []Produk, err error)
 }
