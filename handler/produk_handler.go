@@ -18,6 +18,7 @@ func ProdukHandlerFunc(r *gin.RouterGroup, produk domain.ProdukUsecase) {
 	}
 
 	r.GET("/produk", handler.GetProduk)
+	r.POST("/produk", handler.CreateProduk)
 }
 
 // GetProduk ...
@@ -35,5 +36,37 @@ func (p *ProdukHandler) GetProduk(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "sukses",
 		"data":    listProduk,
+	})
+}
+
+// CreateProduk ...
+func (p *ProdukHandler) CreateProduk(c *gin.Context) {
+	var produk domain.Produk
+	var err error
+
+	// binding form to struct
+	err = c.Bind(&produk)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+
+		c.Abort()
+		return
+	}
+
+	prod, err := p.ProdukUsecase.Create(c, &produk)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+
+		c.Abort()
+		return
+	}
+
+	c.JSON(201, gin.H{
+		"message": "sukses",
+		"data":    prod,
 	})
 }

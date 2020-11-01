@@ -1,4 +1,5 @@
 package repositories
+
 import (
 	"context"
 	"mpnj-api/domain"
@@ -21,4 +22,13 @@ func (p *ProdukRepository) Get(ctx context.Context) (res []domain.Produk, err er
 	var produk []domain.Produk
 	p.Conn.Preload("Kategori").Preload("User").Find(&produk)
 	return produk, nil
+}
+
+// Create ....
+func (p *ProdukRepository) Create(ctx context.Context, pr *domain.Produk) (prod domain.Produk, err error) {
+	err = p.Conn.Create(pr).Error
+	if err != nil {
+		return *pr, err
+	}
+	return *pr, nil
 }

@@ -26,3 +26,9 @@ func (p *ProdukUsecase) Get(c context.Context) (res []domain.Produk, err error) 
 
 	return
 }
+
+// Create ...
+func (p *ProdukUsecase) Create(c context.Context, produk *domain.Produk) (prod domain.Produk, err error) {
+	prod, err = p.produkRepo.Create(c, produk)
+	return
+}
