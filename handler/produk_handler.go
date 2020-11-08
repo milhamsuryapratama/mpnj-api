@@ -2,6 +2,7 @@ package handler
 
 import (
 	"mpnj-api/domain"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,6 +20,7 @@ func ProdukHandlerFunc(r *gin.RouterGroup, produk domain.ProdukUsecase) {
 
 	r.GET("/produk", handler.GetProduk)
 	r.POST("/produk", handler.CreateProduk)
+	r.GET("/produk/:id", handler.GetProdukByID)
 }
 
 // GetProduk ...
@@ -68,5 +70,23 @@ func (p *ProdukHandler) CreateProduk(c *gin.Context) {
 	c.JSON(201, gin.H{
 		"message": "sukses",
 		"data":    prod,
+	})
+}
+
+// GetProdukByID ...
+func (p *ProdukHandler) GetProdukByID(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	produk, err := p.ProdukUsecase.GetByID(c, id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "sukses",
+		"data":    produk,
 	})
 }

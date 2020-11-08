@@ -28,10 +28,12 @@ type Produk struct {
 type ProdukUsecase interface {
 	Get(ctx context.Context) ([]Produk, error)
 	Create(context.Context, *Produk) (Produk, error)
+	GetByID(ctx context.Context, id int) (Produk, error)
 }
 
 // ProdukRepository ...
 type ProdukRepository interface {
 	Get(ctx context.Context) (res []Produk, err error)
 	Create(ctx context.Context, p *Produk) (Produk, error)
+	GetByID(ctx context.Context, id int) (Produk, error)
 }

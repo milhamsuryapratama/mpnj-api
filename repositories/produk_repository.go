@@ -32,3 +32,10 @@ func (p *ProdukRepository) Create(ctx context.Context, pr *domain.Produk) (prod 
 	}
 	return *pr, nil
 }
+
+// GetByID ...
+func (p *ProdukRepository) GetByID(ctx context.Context, id int) (prod domain.Produk, err error) {
+	var produk domain.Produk
+	err = p.Conn.Preload("User").Preload("Kategori").First(&produk, id).Error
+	return produk, err
+}
