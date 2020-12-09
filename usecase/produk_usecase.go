@@ -38,3 +38,15 @@ func (p *ProdukUsecase) GetByID(c context.Context, id int) (prod domain.Produk, 
 	prod, err = p.produkRepo.GetByID(c, id)
 	return
 }
+
+// Update ...
+func (p *ProdukUsecase) Update(prod *domain.Produk, id int) (produk domain.Produk, err error) {
+	var ctx context.Context
+	produk, err = p.produkRepo.GetByID(ctx, id)
+	if err != nil {
+		return produk, err
+	}
+
+	produk, err = p.produkRepo.Update(prod, id)
+	return
+}

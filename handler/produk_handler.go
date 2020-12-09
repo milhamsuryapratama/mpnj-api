@@ -21,6 +21,7 @@ func ProdukHandlerFunc(r *gin.RouterGroup, produk domain.ProdukUsecase) {
 	r.GET("/produk", handler.GetProduk)
 	r.POST("/produk", handler.CreateProduk)
 	r.GET("/produk/:id", handler.GetProdukByID)
+	r.PUT("/produk/:id", handler.UpdateProduk)
 }
 
 // GetProduk ...
@@ -88,5 +89,38 @@ func (p *ProdukHandler) GetProdukByID(c *gin.Context) {
 	c.JSON(200, gin.H{
 		"message": "sukses",
 		"data":    produk,
+	})
+}
+
+// UpdateProduk ...
+func (p *ProdukHandler) UpdateProduk(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	var produk domain.Produk
+	var err error
+
+	err = c.Bind(&produk)
+
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+
+		c.Abort()
+		return
+	}
+
+	prod, err := p.ProdukUsecase.Update(&produk, id)
+	if err != nil {
+		c.JSON(400, gin.H{
+			"message": err.Error(),
+		})
+
+		c.Abort()
+		return
+	}
+
+	c.JSON(200, gin.H{
+		"message": "sukses",
+		"data":    prod,
 	})
 }

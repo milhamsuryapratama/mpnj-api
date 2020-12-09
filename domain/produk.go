@@ -4,7 +4,7 @@ import "context"
 
 // Produk ...
 type Produk struct {
-	IDProduk         int      `tag:"id_produk" json:"id"`
+	IDProduk         int      `gorm:"primaryKey" tag:"id_produk" json:"id"`
 	NamaProduk       string   `tag:"nama_produk" form:"nama_produk" json:"nama_produk"`
 	Slug             string   `tag:"slug" form:"slug" json:"slug"`
 	Satuan           string   `tag:"satuan" form:"satuan" json:"satuan"`
@@ -29,6 +29,7 @@ type ProdukUsecase interface {
 	Get(ctx context.Context) ([]Produk, error)
 	Create(context.Context, *Produk) (Produk, error)
 	GetByID(ctx context.Context, id int) (Produk, error)
+	Update(produk *Produk, id int) (Produk, error)
 }
 
 // ProdukRepository ...
@@ -36,4 +37,5 @@ type ProdukRepository interface {
 	Get(ctx context.Context) (res []Produk, err error)
 	Create(ctx context.Context, p *Produk) (Produk, error)
 	GetByID(ctx context.Context, id int) (Produk, error)
+	Update(produk *Produk, id int) (Produk, error)
 }

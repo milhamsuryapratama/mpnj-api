@@ -39,3 +39,22 @@ func (p *ProdukRepository) GetByID(ctx context.Context, id int) (prod domain.Pro
 	err = p.Conn.Preload("User").Preload("Kategori").First(&produk, id).Error
 	return produk, err
 }
+
+// Update ...
+func (p *ProdukRepository) Update(prod *domain.Produk, id int) (domain.Produk, error) {
+	var produk domain.Produk
+	pro := p.Conn.First(&produk, "id_produk = ?", id)
+	if pro.Error != nil {
+		return produk, pro.Error
+	}
+
+	// p.Conn.Model(&produk).Update("NamaProduk", prod.NamaProduk)
+	produk.NamaProduk = prod.NamaProduk
+
+	r := p.Conn.Debug().Save(&produk)
+	if r.Error != nil {
+		return domain.Produk{}, pro.Error
+	}
+
+	return produk, nil
+}
