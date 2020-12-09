@@ -3,16 +3,12 @@ package handler
 import (
 	"mpnj-api/config"
 	"mpnj-api/domain"
+	"mpnj-api/utils"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
-
-// ResponseError represent the reseponse error struct
-type ResponseError struct {
-	Message string `json:"message"`
-}
 
 // KategoriHandler ...
 type KategoriHandler struct {
@@ -38,15 +34,11 @@ func KategoriHandlerFunc(r *gin.RouterGroup, kategori domain.KategoriUsecase) {
 func (u *KategoriHandler) GetKategori(c *gin.Context) {
 	listKategori, err := u.KategoriUsecase.Get(c)
 	if err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
+		utils.Render(c, err.Error(), nil, 400)
+		return
 	}
 
-	c.JSON(200, gin.H{
-		"message": "sukses",
-		"data":    listKategori,
-	})
+	utils.Render(c, "sukses", listKategori, 200)
 }
 
 // CreateKategori ...
@@ -55,22 +47,17 @@ func (u *KategoriHandler) CreateKategori(c *gin.Context) {
 	var err error
 	err = c.ShouldBindJSON(&kategori)
 	if err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
+		utils.Render(c, err.Error(), nil, 400)
+		return
 	}
 
 	kategori, err = u.KategoriUsecase.Create(c, &kategori)
 	if err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
+		utils.Render(c, err.Error(), nil, 400)
+		return
 	}
 
-	c.JSON(201, gin.H{
-		"message": "sukses",
-		"data":    kategori,
-	})
+	utils.Render(c, "sukses", kategori, 201)
 }
 
 // GetByID ...
@@ -78,17 +65,11 @@ func (u *KategoriHandler) GetByID(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	kategori, err := u.KategoriUsecase.GetByID(c, id)
 	if err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		c.Abort()
+		utils.Render(c, err.Error(), nil, 400)
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"message": "sukses",
-		"data":    kategori,
-	})
+	utils.Render(c, "sukses", kategori, 200)
 }
 
 // UpdateKategori ...
@@ -98,26 +79,17 @@ func (u *KategoriHandler) UpdateKategori(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
 	err = c.ShouldBindJSON(&kategori)
 	if err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		c.Abort()
+		utils.Render(c, err.Error(), nil, 400)
 		return
 	}
 
 	kategori, err = u.KategoriUsecase.Update(&kategori, id)
 	if err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		c.Abort()
+		utils.Render(c, err.Error(), nil, 400)
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"message": "sukses",
-		"data":    kategori,
-	})
+	utils.Render(c, "sukses", kategori, 200)
 }
 
 // DeleteKategori ...
@@ -126,14 +98,9 @@ func (u *KategoriHandler) DeleteKategori(c *gin.Context) {
 
 	err := u.KategoriUsecase.Delete(c, id)
 	if err != nil {
-		c.JSON(400, gin.H{
-			"message": err.Error(),
-		})
-		c.Abort()
+		utils.Render(c, err.Error(), nil, 400)
 		return
 	}
 
-	c.JSON(200, gin.H{
-		"message": "Sukses menghapus data",
-	})
+	utils.Render(c, "sukses", nil, 200)
 }
