@@ -1,16 +1,16 @@
 package config
 
 import (
+	"github.com/joho/godotenv"
 	"os"
 
-	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 // Connect ..
 func Connect() *gorm.DB {
-	godotenv.Load()
+	godotenv.Load("./.env")
 	dbName := os.Getenv("MYSQL_DB")
 	dbUser := os.Getenv("MYSQL_USER")
 	dbPassword := os.Getenv("MYSQL_PASSWORD")
