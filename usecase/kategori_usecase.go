@@ -18,19 +18,18 @@ func NewKategoriUseCase(k domain.KategoriRepository) domain.KategoriUsecase {
 }
 
 // Get ...
-func (k *KategoriUsecase) Get(c context.Context) (res []domain.Kategori, err error) {
-	res, err = k.kategoriRepo.Get(c)
-	if err != nil {
-		return nil, err
-	}
-
-	return
+func (k *KategoriUsecase) Get(c context.Context) ([]domain.Kategori, error) {
+	kategori, err := k.kategoriRepo.Get(c)
+	return kategori, err
 }
 
 // Create ...
-func (k *KategoriUsecase) Create(c context.Context, kategori *domain.Kategori) (kat domain.Kategori, err error) {
-	kat, err = k.kategoriRepo.Create(c, kategori)
-	return
+func (k *KategoriUsecase) Create(c context.Context, kategori *domain.Kategori) error {
+	err := k.kategoriRepo.Create(c, kategori)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // GetByID ...
@@ -40,15 +39,14 @@ func (k *KategoriUsecase) GetByID(c context.Context, id int) (kategori domain.Ka
 }
 
 // Update ...
-func (k *KategoriUsecase) Update(kat *domain.Kategori, id int) (kategori domain.Kategori, err error) {
-	var ctx context.Context
-	kategori, err = k.kategoriRepo.GetByID(ctx, id)
+func (k *KategoriUsecase) Update(c context.Context, kat *domain.Kategori, id int) (domain.Kategori, error) {
+	_, err := k.kategoriRepo.GetByID(c, id)
 	if err != nil {
-		return kategori, err
+		return domain.Kategori{}, err
 	}
 
-	kategori, err = k.kategoriRepo.Update(kat, id)
-	return
+	kategori, err := k.kategoriRepo.Update(c, kat, id)
+	return kategori, err
 }
 
 // Delete ...
