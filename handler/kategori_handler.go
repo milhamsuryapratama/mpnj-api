@@ -32,26 +32,28 @@ func KategoriHandlerFunc(r *gin.RouterGroup, kategori domain.KategoriUsecase) {
 
 // GetKategori ///
 func (u *KategoriHandler) GetKategori(c *gin.Context) {
-	listKategori, err := u.KategoriUsecase.Get(c)
+	kategori, err := u.KategoriUsecase.Get(c)
 	if err != nil {
 		utils.Render(c, err.Error(), nil, 400)
 		return
 	}
 
-	utils.Render(c, "sukses", listKategori, 200)
+	utils.Render(c, "sukses", kategori, 200)
 }
 
 // CreateKategori ...
 func (u *KategoriHandler) CreateKategori(c *gin.Context) {
-	var kategori domain.Kategori
-	var err error
+	var (
+		kategori domain.Kategori
+		err error
+	)
 	err = c.ShouldBindJSON(&kategori)
 	if err != nil {
 		utils.Render(c, err.Error(), nil, 400)
 		return
 	}
 
-	kategori, err = u.KategoriUsecase.Create(c, &kategori)
+	err = u.KategoriUsecase.Create(c, &kategori)
 	if err != nil {
 		utils.Render(c, err.Error(), nil, 400)
 		return
@@ -74,8 +76,10 @@ func (u *KategoriHandler) GetByID(c *gin.Context) {
 
 // UpdateKategori ...
 func (u *KategoriHandler) UpdateKategori(c *gin.Context) {
-	var kategori domain.Kategori
-	var err error
+	var (
+		kategori domain.Kategori
+		err error
+	)
 	id, _ := strconv.Atoi(c.Param("id"))
 	err = c.ShouldBindJSON(&kategori)
 	if err != nil {
@@ -83,13 +87,13 @@ func (u *KategoriHandler) UpdateKategori(c *gin.Context) {
 		return
 	}
 
-	kategori, err = u.KategoriUsecase.Update(&kategori, id)
+	kat, err := u.KategoriUsecase.Update(c, &kategori, id)
 	if err != nil {
 		utils.Render(c, err.Error(), nil, 400)
 		return
 	}
 
-	utils.Render(c, "sukses", kategori, 200)
+	utils.Render(c, "sukses", kat, 200)
 }
 
 // DeleteKategori ...

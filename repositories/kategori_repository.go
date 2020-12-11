@@ -18,16 +18,19 @@ func NewKategoriRepository(Conn *gorm.DB) domain.KategoriRepository {
 }
 
 // Get ...
-func (c *KategoriRepository) Get(ctx context.Context) (res []domain.Kategori, err error) {
+func (c *KategoriRepository) Get(ctx context.Context) ([]domain.Kategori, error) {
 	var kategori []domain.Kategori
 	c.Conn.Find(&kategori)
 	return kategori, nil
 }
 
 // Create ...
-func (c *KategoriRepository) Create(ctx context.Context, k *domain.Kategori) (kat domain.Kategori, err error) {
-	err = c.Conn.Create(k).Error
-	return *k, err
+func (c *KategoriRepository) Create(ctx context.Context, kategori *domain.Kategori) error {
+	err := c.Conn.Create(kategori).Error
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 // GetByID ...
@@ -38,11 +41,11 @@ func (c *KategoriRepository) GetByID(ctx context.Context, id int) (domain.Katego
 }
 
 // Update ...
-func (c *KategoriRepository) Update(k *domain.Kategori, id int) (domain.Kategori, error) {
+func (c *KategoriRepository) Update(ctx context.Context, k *domain.Kategori, id int) (domain.Kategori, error) {
 	var kategori domain.Kategori
-	kat := c.Conn.First(&kategori, id)
-	if kat.Error != nil {
-		return kategori, kat.Error
+	err := c.Conn.First(&kategori, id).Error
+	if err != nil {
+		return domain.Kategori{}, err
 	}
 
 	kategori.NamaKategori = k.NamaKategori
