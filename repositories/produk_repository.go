@@ -51,10 +51,6 @@ func (p *ProdukRepository) Update(prod *domain.Produk, id int) (domain.Produk, e
 	// p.Conn.Model(&produk).Update("NamaProduk", prod.NamaProduk)
 	produk.NamaProduk = prod.NamaProduk
 
-	r := p.Conn.Debug().Save(&produk)
-	if r.Error != nil {
-		return domain.Produk{}, pro.Error
-	}
-
-	return produk, nil
+	p.Conn.Save(&produk)
+	return *prod, nil
 }
