@@ -3,47 +3,50 @@ package usecase
 import (
 	"context"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 	"mpnj-api/domain"
-	"mpnj-api/domain/mock"
+	"mpnj-api/domain/mocks"
 	"testing"
 )
 
 func Test_GetKategori(t *testing.T) {
-	mockKategori := new(mock.KategoriRepository)
-
-	var ctx context.Context
-	kategori := domain.Kategori{
+	mockKategoriRepo := new(mocks.KategoriRepository)
+	mockKategori := domain.Kategori{
 		IDKategoriProduk: 1,
-		NamaKategori:     "IPA",
+		NamaKategori: "Elektronik",
 	}
+	var ctx context.Context
 
-	mockKategori.On("Get", ctx).Return([]domain.Kategori{kategori}, nil)
+	t.Run("success", func(t *testing.T) {
+		mockKategoriRepo.On("Get", mock.Anything).Return([]domain.Kategori{mockKategori}, nil).Once()
 
-	kategoriService := NewKategoriUseCase(mockKategori)
+		kategoriService := NewKategoriUseCase(mockKategoriRepo)
 
-	result, _ := kategoriService.Get(ctx)
+		result, _ := kategoriService.Get(ctx)
 
-	mockKategori.AssertExpectations(t)
-
-	assert.Equal(t, "IPA", result[0].NamaKategori)
+		assert.Equal(t, "Elektronik", result[0].NamaKategori)
+		mockKategoriRepo.AssertExpectations(t)
+	})
 }
 
 func Test_GetKategoriByID(t *testing.T)  {
-	mockKategori := new(mock.KategoriRepository)
+	mockKategoriRepo := new(mocks.KategoriRepository)
 	var ctx context.Context
 	kategori := domain.Kategori{
 		IDKategoriProduk: 1,
 		NamaKategori: "IPA",
 	}
 
-	mockKategori.On("GetByID", ctx, kategori.IDKategoriProduk).Return(kategori, nil)
+	t.Run("success", func(t *testing.T) {
+		mockKategoriRepo.On("GetByID", mock.Anything, mock.Anything).Return(kategori, nil)
 
-	kategoriService := NewKategoriUseCase(mockKategori)
+		kategoriService := NewKategoriUseCase(mockKategoriRepo)
 
-	kat, _ := kategoriService.GetByID(ctx, 1)
+		kat, _ := kategoriService.GetByID(ctx, 1)
 
-	mockKategori.AssertExpectations(t)
+		mockKategoriRepo.AssertExpectations(t)
 
-	assert.Equal(t, 1, kat.IDKategoriProduk)
-	assert.Equal(t, "IPA", kat.NamaKategori)
+		assert.Equal(t, 1, kat.IDKategoriProduk)
+		assert.Equal(t, "IPA", kat.NamaKategori)
+	})
 }
