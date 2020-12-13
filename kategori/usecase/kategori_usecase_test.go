@@ -29,7 +29,7 @@ func Test_GetKategori(t *testing.T) {
 	})
 }
 
-func Test_GetKategoriByID(t *testing.T)  {
+func Test_GetKategoriByID(t *testing.T) {
 	mockKategoriRepo := new(mocks.KategoriRepository)
 	var ctx context.Context
 	kategori := domain.Kategori{
@@ -48,5 +48,64 @@ func Test_GetKategoriByID(t *testing.T)  {
 
 		assert.Equal(t, 1, kat.IDKategoriProduk)
 		assert.Equal(t, "IPA", kat.NamaKategori)
+	})
+}
+
+func Test_CreateKategori(t *testing.T) {
+	mockKategoriRepo := new(mocks.KategoriRepository)
+	mockKategori := domain.Kategori{
+		IDKategoriProduk: 2,
+		NamaKategori: "Fashion",
+	}
+	var ctx context.Context
+	t.Run("success", func(t *testing.T) {
+		tempMockKategori := mockKategori
+		mockKategoriRepo.On("Create", mock.Anything, mock.AnythingOfType("*domain.Kategori")).Return(nil).Once()
+
+		kategoriService := NewKategoriUseCase(mockKategoriRepo)
+
+		err := kategoriService.Create(ctx, &mockKategori)
+
+		assert.NoError(t, err)
+		assert.Equal(t, tempMockKategori.NamaKategori, mockKategori.NamaKategori)
+		mockKategoriRepo.AssertExpectations(t)
+	})
+}
+
+func Test_UpdateKategori(t *testing.T) {
+	mockKategoriRepo := new(mocks.KategoriRepository)
+	mockKategori := domain.Kategori{
+		IDKategoriProduk: 3,
+		NamaKategori: "Food",
+	}
+	var ctx context.Context
+	t.Run("success", func(t *testing.T) {
+		mockKategoriRepo.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Once().Return(mockKategori, nil)
+		mockKategoriRepo.On("Update", mock.Anything, &mockKategori, mockKategori.IDKategoriProduk).Once().Return(mockKategori, nil)
+
+		kategoriService := NewKategoriUseCase(mockKategoriRepo)
+
+		result, _ := kategoriService.Update(ctx, &mockKategori, mockKategori.IDKategoriProduk)
+
+		assert.Equal(t, "Food", result.NamaKategori)
+		mockKategoriRepo.AssertExpectations(t)
+	})
+}
+
+func Test_DeleteKategori(t *testing.T) {
+	mockKategoriRepo := new(mocks.KategoriRepository)
+	mockKategori := domain.Kategori{
+		NamaKategori: "Food",
+	}
+
+	t.Run("success", func(t *testing.T) {
+		mockKategoriRepo.On("Delete", mock.Anything, mock.AnythingOfType("int")).Once().Return(nil)
+
+		kategoriService := NewKategoriUseCase(mockKategoriRepo)
+
+		err := kategoriService.Delete(context.TODO(), mockKategori.IDKategoriProduk)
+
+		assert.NoError(t, err)
+		mockKategoriRepo.AssertExpectations(t)
 	})
 }
