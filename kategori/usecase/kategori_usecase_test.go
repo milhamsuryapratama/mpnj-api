@@ -71,3 +71,23 @@ func Test_CreateKategori(t *testing.T)  {
 		mockKategoriRepo.AssertExpectations(t)
 	})
 }
+
+func Test_UpdateKategori(t *testing.T)  {
+	mockKategoriRepo := new(mocks.KategoriRepository)
+	mockKategori := domain.Kategori{
+		IDKategoriProduk: 3,
+		NamaKategori: "Food",
+	}
+	var ctx context.Context
+	t.Run("success", func(t *testing.T) {
+		mockKategoriRepo.On("GetByID", mock.Anything, mockKategori.IDKategoriProduk).Once().Return(mockKategori, nil)
+		mockKategoriRepo.On("Update", mock.Anything, &mockKategori, mockKategori.IDKategoriProduk).Once().Return(mockKategori, nil)
+
+		kategoriService := NewKategoriUseCase(mockKategoriRepo)
+
+		result, _ := kategoriService.Update(ctx, &mockKategori, mockKategori.IDKategoriProduk)
+
+		assert.Equal(t, "Food", result.NamaKategori)
+		mockKategoriRepo.AssertExpectations(t)
+	})
+}
