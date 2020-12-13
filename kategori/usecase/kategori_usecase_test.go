@@ -1,15 +1,15 @@
-package kategoritest
+package usecase
 
 import (
 	"context"
 	"github.com/stretchr/testify/assert"
 	"mpnj-api/domain"
-	"mpnj-api/usecase"
+	"mpnj-api/domain/mock"
 	"testing"
 )
 
 func Test_GetKategori(t *testing.T) {
-	mockKategori := new(KategoriRepository)
+	mockKategori := new(mock.KategoriRepository)
 
 	var ctx context.Context
 	kategori := domain.Kategori{
@@ -19,7 +19,7 @@ func Test_GetKategori(t *testing.T) {
 
 	mockKategori.On("Get", ctx).Return([]domain.Kategori{kategori}, nil)
 
-	kategoriService := usecase.NewKategoriUseCase(mockKategori)
+	kategoriService := NewKategoriUseCase(mockKategori)
 
 	result, _ := kategoriService.Get(ctx)
 
@@ -29,7 +29,7 @@ func Test_GetKategori(t *testing.T) {
 }
 
 func Test_GetKategoriByID(t *testing.T)  {
-	mockKategori := new(KategoriRepository)
+	mockKategori := new(mock.KategoriRepository)
 	var ctx context.Context
 	kategori := domain.Kategori{
 		IDKategoriProduk: 1,
@@ -38,7 +38,7 @@ func Test_GetKategoriByID(t *testing.T)  {
 
 	mockKategori.On("GetByID", ctx, kategori.IDKategoriProduk).Return(kategori, nil)
 
-	kategoriService := usecase.NewKategoriUseCase(mockKategori)
+	kategoriService := NewKategoriUseCase(mockKategori)
 
 	kat, _ := kategoriService.GetByID(ctx, 1)
 
