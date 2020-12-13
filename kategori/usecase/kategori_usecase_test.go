@@ -29,7 +29,7 @@ func Test_GetKategori(t *testing.T) {
 	})
 }
 
-func Test_GetKategoriByID(t *testing.T)  {
+func Test_GetKategoriByID(t *testing.T) {
 	mockKategoriRepo := new(mocks.KategoriRepository)
 	var ctx context.Context
 	kategori := domain.Kategori{
@@ -51,7 +51,7 @@ func Test_GetKategoriByID(t *testing.T)  {
 	})
 }
 
-func Test_CreateKategori(t *testing.T)  {
+func Test_CreateKategori(t *testing.T) {
 	mockKategoriRepo := new(mocks.KategoriRepository)
 	mockKategori := domain.Kategori{
 		IDKategoriProduk: 2,
@@ -72,7 +72,7 @@ func Test_CreateKategori(t *testing.T)  {
 	})
 }
 
-func Test_UpdateKategori(t *testing.T)  {
+func Test_UpdateKategori(t *testing.T) {
 	mockKategoriRepo := new(mocks.KategoriRepository)
 	mockKategori := domain.Kategori{
 		IDKategoriProduk: 3,
@@ -80,7 +80,7 @@ func Test_UpdateKategori(t *testing.T)  {
 	}
 	var ctx context.Context
 	t.Run("success", func(t *testing.T) {
-		mockKategoriRepo.On("GetByID", mock.Anything, mockKategori.IDKategoriProduk).Once().Return(mockKategori, nil)
+		mockKategoriRepo.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Once().Return(mockKategori, nil)
 		mockKategoriRepo.On("Update", mock.Anything, &mockKategori, mockKategori.IDKategoriProduk).Once().Return(mockKategori, nil)
 
 		kategoriService := NewKategoriUseCase(mockKategoriRepo)
@@ -88,6 +88,24 @@ func Test_UpdateKategori(t *testing.T)  {
 		result, _ := kategoriService.Update(ctx, &mockKategori, mockKategori.IDKategoriProduk)
 
 		assert.Equal(t, "Food", result.NamaKategori)
+		mockKategoriRepo.AssertExpectations(t)
+	})
+}
+
+func Test_DeleteKategori(t *testing.T) {
+	mockKategoriRepo := new(mocks.KategoriRepository)
+	mockKategori := domain.Kategori{
+		NamaKategori: "Food",
+	}
+
+	t.Run("success", func(t *testing.T) {
+		mockKategoriRepo.On("Delete", mock.Anything, mock.AnythingOfType("int")).Once().Return(nil)
+
+		kategoriService := NewKategoriUseCase(mockKategoriRepo)
+
+		err := kategoriService.Delete(context.TODO(), mockKategori.IDKategoriProduk)
+
+		assert.NoError(t, err)
 		mockKategoriRepo.AssertExpectations(t)
 	})
 }
