@@ -50,3 +50,24 @@ func Test_GetKategoriByID(t *testing.T)  {
 		assert.Equal(t, "IPA", kat.NamaKategori)
 	})
 }
+
+func Test_CreateKategori(t *testing.T)  {
+	mockKategoriRepo := new(mocks.KategoriRepository)
+	mockKategori := domain.Kategori{
+		IDKategoriProduk: 2,
+		NamaKategori: "Fashion",
+	}
+	var ctx context.Context
+	t.Run("success", func(t *testing.T) {
+		tempMockKategori := mockKategori
+		mockKategoriRepo.On("Create", mock.Anything, mock.AnythingOfType("*domain.Kategori")).Return(nil).Once()
+
+		kategoriService := NewKategoriUseCase(mockKategoriRepo)
+
+		err := kategoriService.Create(ctx, &mockKategori)
+
+		assert.NoError(t, err)
+		assert.Equal(t, tempMockKategori.NamaKategori, mockKategori.NamaKategori)
+		mockKategoriRepo.AssertExpectations(t)
+	})
+}
