@@ -1,4 +1,4 @@
-package repositories
+package repository
 
 import (
 	"context"
@@ -36,8 +36,8 @@ func (c *KategoriRepository) Create(ctx context.Context, kategori *domain.Katego
 // GetByID ...
 func (c *KategoriRepository) GetByID(ctx context.Context, id int) (domain.Kategori, error) {
 	var kategori domain.Kategori
-	m := c.Conn.First(&kategori, id).Error
-	return kategori, m
+	err := c.Conn.First(&kategori, id).Error
+	return kategori, err
 }
 
 // Update ...
@@ -54,13 +54,7 @@ func (c *KategoriRepository) Update(ctx context.Context, k *domain.Kategori, id 
 }
 
 // Delete ...
-func (c *KategoriRepository) Delete(ctx context.Context, id int) error {
-	var kategori domain.Kategori
-	err := c.Conn.First(&kategori, id).Error
-	if err != nil {
-		return err
-	}
-
-	c.Conn.Delete(&kategori, id)
-	return err
+func (c *KategoriRepository) Delete(ctx context.Context, k *domain.Kategori, id int) error {
+	c.Conn.Delete(&k, id)
+	return nil
 }

@@ -1,27 +1,26 @@
 package main
 
 import (
-	"mpnj-api/config"
-	"mpnj-api/handler"
-	"mpnj-api/repositories"
-	"mpnj-api/usecase"
-
 	"github.com/gin-gonic/gin"
+	"mpnj-api/config"
+	"mpnj-api/kategori/delivery/http"
+	"mpnj-api/kategori/repository"
+	"mpnj-api/kategori/usecase"
 )
 
 func main() {
 	r := gin.New()
 	db := config.Connect()
 
-	kategoriRepo := repositories.NewKategoriRepository(db)
+	kategoriRepo := repository.NewKategoriRepository(db)
 	kategoriUsecase := usecase.NewKategoriUseCase(kategoriRepo)
 
-	produkRepo := repositories.NewProdukRepository(db)
-	produkUsecase := usecase.NewProdukUsecase(produkRepo)
+	//produkRepo := repositories.NewProdukRepository(db)
+	//produkUsecase := usecase.NewProdukUsecase(produkRepo)
 
 	api := r.Group("/api")
-	handler.KategoriHandlerFunc(api, kategoriUsecase)
-	handler.ProdukHandlerFunc(api, produkUsecase)
+	http.KategoriHandlerFunc(api, kategoriUsecase)
+	//handler.ProdukHandlerFunc(api, produkUsecase)
 
 	r.Run()
 }
