@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"mpnj-api/domain"
@@ -78,14 +79,14 @@ func Test_UpdateKategori(t *testing.T) {
 		IDKategoriProduk: 3,
 		NamaKategori: "Food",
 	}
-	var ctx context.Context
+
 	t.Run("success", func(t *testing.T) {
 		mockKategoriRepo.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Once().Return(mockKategori, nil)
 		mockKategoriRepo.On("Update", mock.Anything, &mockKategori, mockKategori.IDKategoriProduk).Once().Return(mockKategori, nil)
 
 		kategoriService := NewKategoriUseCase(mockKategoriRepo)
 
-		result, _ := kategoriService.Update(ctx, &mockKategori, mockKategori.IDKategoriProduk)
+		result, _ := kategoriService.Update(context.TODO(), &mockKategori, mockKategori.IDKategoriProduk)
 
 		assert.Equal(t, "Food", result.NamaKategori)
 		mockKategoriRepo.AssertExpectations(t)
@@ -99,13 +100,26 @@ func Test_DeleteKategori(t *testing.T) {
 	}
 
 	t.Run("success", func(t *testing.T) {
-		mockKategoriRepo.On("Delete", mock.Anything, mock.AnythingOfType("int")).Once().Return(nil)
+		mockKategoriRepo.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Return(mockKategori, nil).Once()
+
+		mockKategoriRepo.On("Delete", mock.Anything, mock.AnythingOfType("*domain.Kategori") ,mock.AnythingOfType("int")).Return(nil).Once()
 
 		kategoriService := NewKategoriUseCase(mockKategoriRepo)
 
 		err := kategoriService.Delete(context.TODO(), mockKategori.IDKategoriProduk)
 
 		assert.NoError(t, err)
+		mockKategoriRepo.AssertExpectations(t)
+	})
+
+	t.Run("not found category", func(t *testing.T) {
+		mockKategoriRepo.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Return(domain.Kategori{}, errors.New("Error"))
+
+		kategoriService := NewKategoriUseCase(mockKategoriRepo)
+
+		err := kategoriService.Delete(context.TODO(), mockKategori.IDKategoriProduk)
+
+		assert.Error(t, err)
 		mockKategoriRepo.AssertExpectations(t)
 	})
 }
