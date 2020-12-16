@@ -50,3 +50,12 @@ func (p *ProdukUsecase) Update(prod *domain.Produk, id int) (produk domain.Produ
 	produk, err = p.produkRepo.Update(prod, id)
 	return
 }
+
+func (p *ProdukUsecase) Delete(c context.Context, id int) (err error) {
+	produk, err := p.produkRepo.GetByID(c, id)
+	if err != nil {
+		return
+	}
+	err = p.produkRepo.Delete(c, &produk, id)
+	return
+}

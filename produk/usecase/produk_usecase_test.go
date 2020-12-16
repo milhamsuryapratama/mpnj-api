@@ -3,6 +3,7 @@ package usecase
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"mpnj-api/domain"
@@ -163,6 +164,68 @@ func Test_GetByID(t *testing.T) {
 
 		assert.NoError(t, err)
 		assert.Equal(t, "Produk 1", p.NamaProduk)
+
+		mockProdukRepository.AssertExpectations(t)
+	})
+}
+
+func Test_DeleteProduk(t *testing.T) {
+	mockProdukRepository := new(mocks.ProdukRepository)
+	mockProduk := domain.Produk{
+		IDProduk: 1,
+		NamaProduk: "Produk 1",
+		Kategori: domain.Kategori{
+			IDKategoriProduk: 1,
+			NamaKategori: "Elektronik",
+		},
+		Berat: 1000,
+		Diskon: 0,
+		HargaJual: 20000,
+		HargaModal: 10000,
+		KategoriProdukID: 1,
+		Keterangan: "Oke",
+		Satuan: "pcs",
+		Slug: "produk-1",
+		Status: "aktif",
+		Stok: 10,
+		Terjual: 0,
+		TipeProduk: "single",
+		User: domain.User{
+			IDUser: 1,
+			Email: "ilham@gmail.com",
+			NamaLengkap: "Ilham",
+			NomorHp: "085330150827",
+			Password: "ilham",
+			Username: "ilham",
+		},
+		UserID: 1,
+		Wishlist: 0,
+	}
+
+	t.Run("not found", func(t *testing.T) {
+		mockProdukRepository.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Return(domain.Produk{}, errors.New("Produk Not Found")).Once()
+
+		produkService := NewProdukUsecase(mockProdukRepository)
+
+		err := produkService.Delete(context.TODO(), mockProduk.IDProduk)
+
+		assert.Error(t, err)
+
+		mockProdukRepository.AssertExpectations(t)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		mockProdukRepository.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Return(mockProduk, nil).Once()
+
+		mockProdukRepository.On("Delete", mock.Anything, mock.AnythingOfType("*domain.Produk"), mock.AnythingOfType("int")).Return(nil)
+
+		produkService := NewProdukUsecase(mockProdukRepository)
+
+		err := produkService.Delete(context.TODO(), mockProduk.IDProduk)
+
+		fmt.Println(err)
+
+		assert.NoError(t, err)
 
 		mockProdukRepository.AssertExpectations(t)
 	})
