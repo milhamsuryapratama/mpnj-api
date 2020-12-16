@@ -40,5 +40,5 @@ type KategoriRepository interface {
 	Create(ctx context.Context, k *Kategori) error
 	GetByID(ctx context.Context, id int) (Kategori, error)
 	Update(ctx context.Context, kategori *Kategori, id int) (Kategori, error)
-	Delete(ctx context.Context, id int) error
+	Delete(ctx context.Context, kategori *Kategori, id int) error
 }
