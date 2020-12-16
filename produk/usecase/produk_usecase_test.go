@@ -1,15 +1,15 @@
-package produktest
+package usecase
 
 import (
 	"context"
 	"github.com/magiconair/properties/assert"
 	"mpnj-api/domain"
-	"mpnj-api/usecase"
+	"mpnj-api/domain/mocks"
 	"testing"
 )
 
 func Test_GetProduk(t *testing.T) {
-	mockProdukRepository := new(ProdukRepository)
+	mockProdukRepository := new(mocks.ProdukRepository)
 	mockProduk := domain.Produk{
 		IDProduk: 1,
 		NamaProduk: "Produk 1",
@@ -44,7 +44,7 @@ func Test_GetProduk(t *testing.T) {
 	var ctx context.Context
 	mockProdukRepository.On("Get", ctx).Return([]domain.Produk{mockProduk}, nil)
 
-	produkService := usecase.NewProdukUsecase(mockProdukRepository)
+	produkService := NewProdukUsecase(mockProdukRepository)
 
 	result, _ := produkService.Get(ctx)
 
@@ -56,7 +56,7 @@ func Test_GetProduk(t *testing.T) {
 }
 
 func Test_CreateProduk(t *testing.T) {
-	mockProdukRepository := new(ProdukRepository)
+	mockProdukRepository := new(mocks.ProdukRepository)
 	mockProduk := domain.Produk{
 		IDProduk: 1,
 		NamaProduk: "Produk 1",
@@ -91,7 +91,7 @@ func Test_CreateProduk(t *testing.T) {
 	var ctx context.Context
 	mockProdukRepository.On("Create", ctx, &mockProduk).Return(mockProduk, nil)
 
-	produkService := usecase.NewProdukUsecase(mockProdukRepository)
+	produkService := NewProdukUsecase(mockProdukRepository)
 
 	result, _ := produkService.Create(ctx, &mockProduk)
 
@@ -103,7 +103,7 @@ func Test_CreateProduk(t *testing.T) {
 }
 
 func Test_UpdateProduk(t *testing.T) {
-	mockProdukRepository := new(ProdukRepository)
+	mockProdukRepository := new(mocks.ProdukRepository)
 	mockProduk := domain.Produk{
 		IDProduk: 1,
 		NamaProduk: "Produk 1",
@@ -140,7 +140,7 @@ func Test_UpdateProduk(t *testing.T) {
 	mockProdukRepository.On("GetByID", ctx, 1)
 	mockProdukRepository.On("Update", mockProduk, 1).Return(mockProduk, nil)
 
-	produkService := usecase.NewProdukUsecase(mockProdukRepository)
+	produkService := NewProdukUsecase(mockProdukRepository)
 
 	result, _ := produkService.Update(&mockProduk, 1)
 
