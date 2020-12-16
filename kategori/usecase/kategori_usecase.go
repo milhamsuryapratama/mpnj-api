@@ -51,6 +51,11 @@ func (k *KategoriUsecase) Update(c context.Context, kat *domain.Kategori, id int
 
 // Delete ...
 func (k *KategoriUsecase) Delete(c context.Context, id int) (err error) {
-	err = k.kategoriRepo.Delete(c, id)
-	return
+	kategori, err := k.kategoriRepo.GetByID(c, id)
+	if err != nil {
+		return err
+	}
+
+	err = k.kategoriRepo.Delete(c, &kategori, id)
+	return	err
 }
