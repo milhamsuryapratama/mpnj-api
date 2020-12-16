@@ -1,4 +1,4 @@
-package handler
+package http
 
 import (
 	"mpnj-api/domain"
@@ -58,7 +58,7 @@ func (p *ProdukHandler) CreateProduk(c *gin.Context) {
 		return
 	}
 
-	prod, err := p.ProdukUsecase.Create(c, &produk)
+	err = p.ProdukUsecase.Create(c, &produk)
 	if err != nil {
 		c.JSON(400, gin.H{
 			"message": err.Error(),
@@ -70,7 +70,7 @@ func (p *ProdukHandler) CreateProduk(c *gin.Context) {
 
 	c.JSON(201, gin.H{
 		"message": "sukses",
-		"data":    prod,
+		"data":    produk,
 	})
 }
 

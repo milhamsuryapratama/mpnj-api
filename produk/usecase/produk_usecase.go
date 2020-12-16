@@ -28,8 +28,8 @@ func (p *ProdukUsecase) Get(c context.Context) (res []domain.Produk, err error) 
 }
 
 // Create ...
-func (p *ProdukUsecase) Create(c context.Context, produk *domain.Produk) (prod domain.Produk, err error) {
-	prod, err = p.produkRepo.Create(c, produk)
+func (p *ProdukUsecase) Create(c context.Context, produk *domain.Produk) (err error) {
+	err = p.produkRepo.Create(c, produk)
 	return
 }
 
@@ -44,7 +44,7 @@ func (p *ProdukUsecase) Update(prod *domain.Produk, id int) (produk domain.Produ
 	var ctx context.Context
 	produk, err = p.produkRepo.GetByID(ctx, id)
 	if err != nil {
-		return produk, err
+		return
 	}
 
 	produk, err = p.produkRepo.Update(prod, id)

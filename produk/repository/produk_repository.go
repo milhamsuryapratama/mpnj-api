@@ -1,4 +1,4 @@
-package repositories
+package repository
 
 import (
 	"context"
@@ -25,12 +25,12 @@ func (p *ProdukRepository) Get(ctx context.Context) (res []domain.Produk, err er
 }
 
 // Create ....
-func (p *ProdukRepository) Create(ctx context.Context, pr *domain.Produk) (prod domain.Produk, err error) {
+func (p *ProdukRepository) Create(ctx context.Context, pr *domain.Produk) (err error) {
 	err = p.Conn.Create(pr).Error
 	if err != nil {
-		return *pr, err
+		return
 	}
-	return *pr, nil
+	return nil
 }
 
 // GetByID ...
