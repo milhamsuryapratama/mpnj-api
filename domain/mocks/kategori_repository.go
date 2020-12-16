@@ -28,13 +28,13 @@ func (_m *KategoriRepository) Create(ctx context.Context, k *domain.Kategori) er
 	return r0
 }
 
-// Delete provides a mock function with given fields: ctx, id
-func (_m *KategoriRepository) Delete(ctx context.Context, id int) error {
-	ret := _m.Called(ctx, id)
+// Delete provides a mock function with given fields: ctx, kategori, id
+func (_m *KategoriRepository) Delete(ctx context.Context, kategori *domain.Kategori, id int) error {
+	ret := _m.Called(ctx, kategori, id)
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(context.Context, int) error); ok {
-		r0 = rf(ctx, id)
+	if rf, ok := ret.Get(0).(func(context.Context, *domain.Kategori, int) error); ok {
+		r0 = rf(ctx, kategori, id)
 	} else {
 		r0 = ret.Error(0)
 	}
