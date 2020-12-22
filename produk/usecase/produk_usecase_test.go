@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"errors"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 	"mpnj-api/domain"
@@ -108,48 +109,107 @@ func Test_CreateProduk(t *testing.T) {
 	})
 }
 
-//func Test_UpdateProduk(t *testing.T) {
-//	mockProdukRepository := new(mocks.ProdukRepository)
-//	mockProduk := domain.Produk{
-//		IDProduk: 1,
-//		NamaProduk: "Produk 1",
-//		Kategori: domain.Kategori{
-//			IDKategoriProduk: 1,
-//			NamaKategori: "Elektronik",
-//		},
-//		Berat: 1000,
-//		Diskon: 0,
-//		HargaJual: 20000,
-//		HargaModal: 10000,
-//		KategoriProdukID: 1,
-//		Keterangan: "Oke",
-//		Satuan: "pcs",
-//		Slug: "produk-1",
-//		Status: "aktif",
-//		Stok: 10,
-//		Terjual: 0,
-//		TipeProduk: "single",
-//		User: domain.User{
-//			IDUser: 1,
-//			Email: "ilham@gmail.com",
-//			NamaLengkap: "Ilham",
-//			NomorHp: "085330150827",
-//			Password: "ilham",
-//			Username: "ilham",
-//		},
-//		UserID: 1,
-//		Wishlist: 0,
-//	}
-//
-//	var ctx context.Context
-//	mockProdukRepository.On("GetByID", ctx, 1)
-//	mockProdukRepository.On("Update", mockProduk, 1).Return(mockProduk, nil)
-//
-//	produkService := NewProdukUsecase(mockProdukRepository)
-//
-//	result, _ := produkService.Update(&mockProduk, 1)
-//
-//	assert.Equal(t, "Produk 1", result.NamaProduk)
-//
-//	mockProdukRepository.AssertExpectations(t)
-//}
+func Test_UpdateProduk(t *testing.T) {
+	mockProdukRepository := new(mocks.ProdukRepository)
+	mockProduk := domain.Produk{
+		IDProduk: 1,
+		NamaProduk: "Produk 1",
+		Kategori: domain.Kategori{
+			IDKategoriProduk: 1,
+			NamaKategori: "Elektronik",
+		},
+		Berat: 1000,
+		Diskon: 0,
+		HargaJual: 20000,
+		HargaModal: 10000,
+		KategoriProdukID: 1,
+		Keterangan: "Oke",
+		Satuan: "pcs",
+		Slug: "produk-1",
+		Status: "aktif",
+		Stok: 10,
+		Terjual: 0,
+		TipeProduk: "single",
+		User: domain.User{
+			IDUser: 1,
+			Email: "ilham@gmail.com",
+			NamaLengkap: "Ilham",
+			NomorHp: "085330150827",
+			Password: "ilham",
+			Username: "ilham",
+		},
+		UserID: 1,
+		Wishlist: 0,
+	}
+
+	t.Run("success", func(t *testing.T) {
+		mockProdukRepository.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Once().Return(mockProduk, nil)
+		mockProdukRepository.On("Update", &mockProduk, mockProduk.IDProduk).Once().Return(mockProduk, nil)
+
+		produkService := NewProdukUsecase(mockProdukRepository)
+
+		result, _ := produkService.Update(&mockProduk, mockProduk.IDProduk)
+
+		assert.Equal(t, "Produk 1", result.NamaProduk)
+
+		mockProdukRepository.AssertExpectations(t)
+	})
+}
+
+func Test_DeleteProduk(t *testing.T) {
+	mockProdukRepository := new(mocks.ProdukRepository)
+	mockProduk := domain.Produk{
+		IDProduk: 1,
+		NamaProduk: "Produk 1",
+		Kategori: domain.Kategori{
+			IDKategoriProduk: 1,
+			NamaKategori: "Elektronik",
+		},
+		Berat: 1000,
+		Diskon: 0,
+		HargaJual: 20000,
+		HargaModal: 10000,
+		KategoriProdukID: 1,
+		Keterangan: "Oke",
+		Satuan: "pcs",
+		Slug: "produk-1",
+		Status: "aktif",
+		Stok: 10,
+		Terjual: 0,
+		TipeProduk: "single",
+		User: domain.User{
+			IDUser: 1,
+			Email: "ilham@gmail.com",
+			NamaLengkap: "Ilham",
+			NomorHp: "085330150827",
+			Password: "ilham",
+			Username: "ilham",
+		},
+		UserID: 1,
+		Wishlist: 0,
+	}
+
+	t.Run("not found produk", func(t *testing.T) {
+		mockProdukRepository.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Once().Return(domain.Produk{}, errors.New("Produk not fount"))
+
+		produkService := NewProdukUsecase(mockProdukRepository)
+
+		_, err := produkService.GetByID(context.TODO(), mockProduk.IDProduk)
+
+		assert.Error(t, err)
+		mockProdukRepository.AssertExpectations(t)
+	})
+
+	t.Run("success", func(t *testing.T) {
+		mockProdukRepository.On("GetByID", mock.Anything, mock.AnythingOfType("int")).Once().Return(mockProduk, nil)
+
+		mockProdukRepository.On("Delete", mock.Anything, mock.AnythingOfType("*domain.Produk"), mock.AnythingOfType("int")).Once().Return(nil)
+
+		produkService := NewProdukUsecase(mockProdukRepository)
+
+		err := produkService.Delete(context.TODO(), mockProduk.IDProduk)
+
+		assert.NoError(t, err)
+		mockProdukRepository.AssertExpectations(t)
+	})
+}
