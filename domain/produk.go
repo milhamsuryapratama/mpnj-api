@@ -30,6 +30,7 @@ type ProdukUsecase interface {
 	Create(context.Context, *Produk) error
 	GetByID(ctx context.Context, id int) (Produk, error)
 	Update(produk *Produk, id int) (Produk, error)
+	Delete(ctx context.Context, id int) error
 }
 
 // ProdukRepository ...
@@ -38,4 +39,5 @@ type ProdukRepository interface {
 	Create(ctx context.Context, p *Produk) error
 	GetByID(ctx context.Context, id int) (Produk, error)
 	Update(produk *Produk, id int) (Produk, error)
+	Delete(ctx context.Context, produk *Produk, id int) error
 }
