@@ -54,3 +54,8 @@ func (p *ProdukRepository) Update(prod *domain.Produk, id int) (domain.Produk, e
 	p.Conn.Save(&produk)
 	return *prod, nil
 }
+
+func (p *ProdukRepository) Delete(ctx context.Context, produk *domain.Produk, id int) error {
+	p.Conn.Delete(&produk, id)
+	return nil
+}
