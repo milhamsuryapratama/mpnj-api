@@ -6,6 +6,9 @@ import (
 	"mpnj-api/kategori/delivery/http"
 	"mpnj-api/kategori/repository"
 	"mpnj-api/kategori/usecase"
+	produkRepo "mpnj-api/produk/repository"
+	produkUsecase "mpnj-api/produk/usecase"
+	produkHandler "mpnj-api/produk/delivery/http"
 )
 
 func main() {
@@ -15,12 +18,12 @@ func main() {
 	kategoriRepo := repository.NewKategoriRepository(db)
 	kategoriUsecase := usecase.NewKategoriUseCase(kategoriRepo)
 
-	//produkRepo := repositories.NewProdukRepository(db)
-	//produkUsecase := usecase.NewProdukUsecase(produkRepo)
+	produkRepo := produkRepo.NewProdukRepository(db)
+	produkUsecase := produkUsecase.NewProdukUsecase(produkRepo)
 
 	api := r.Group("/api")
 	http.KategoriHandlerFunc(api, kategoriUsecase)
-	//handler.ProdukHandlerFunc(api, produkUsecase)
+	produkHandler.ProdukHandlerFunc(api, produkUsecase)
 
 	r.Run()
 }
