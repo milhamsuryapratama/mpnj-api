@@ -27,14 +27,13 @@ func (_m *ProdukRepository) Create(ctx context.Context, p *domain.Produk) error 
 
 	return r0
 }
-
-// Delete provides a mock function with given fields: ctx, produk, id
-func (_m *ProdukRepository) Delete(ctx context.Context, produk *domain.Produk, id int) error {
-	ret := _m.Called(ctx, produk, id)
+// Delete provides a mock function with given fields: ctx, p, id
+func (_m *ProdukRepository) Delete(ctx context.Context, p *domain.Produk, id int) error {
+	ret := _m.Called(ctx, p, id)
 
 	var r0 error
 	if rf, ok := ret.Get(0).(func(context.Context, *domain.Produk, int) error); ok {
-		r0 = rf(ctx, produk, id)
+		r0 = rf(ctx, p, id)
 	} else {
 		r0 = ret.Error(0)
 	}
