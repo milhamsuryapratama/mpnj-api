@@ -18,7 +18,7 @@ func NewProdukUsecase(p domain.ProdukRepository) domain.ProdukUsecase {
 }
 
 // Get ...
-func (p *ProdukUsecase) Get(c context.Context) (res []domain.Produk, err error) {
+func (p *ProdukUsecase) Get(c context.Context) (res []domain.ProdukWithKategori, err error) {
 	res, err = p.produkRepo.Get(c)
 	if err != nil {
 		return nil, err
