@@ -3,44 +3,37 @@ package usecase
 import (
 	"context"
 	"errors"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 	"mpnj-api/domain"
 	"mpnj-api/domain/mocks"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func Test_GetProduk(t *testing.T) {
 	mockProdukRepository := new(mocks.ProdukRepository)
 	mockProduk := domain.Produk{
-		IDProduk: 1,
+		IDProduk:   1,
 		NamaProduk: "Produk 1",
 		Kategori: domain.Kategori{
 			IDKategoriProduk: 1,
-			NamaKategori: "Elektronik",
+			NamaKategori:     "Elektronik",
 		},
-		Berat: 1000,
-		Diskon: 0,
-		HargaJual: 20000,
-		HargaModal: 10000,
+		Berat:            1000,
+		Diskon:           0,
+		HargaJual:        20000,
+		HargaModal:       10000,
 		KategoriProdukID: 1,
-		Keterangan: "Oke",
-		Satuan: "pcs",
-		Slug: "produk-1",
-		Status: "aktif",
-		Stok: 10,
-		Terjual: 0,
-		TipeProduk: "single",
-		User: domain.User{
-			IDUser: 1,
-			Email: "ilham@gmail.com",
-			NamaLengkap: "Ilham",
-			NomorHp: "085330150827",
-			Password: "ilham",
-			Username: "ilham",
-		},
-		UserID: 1,
-		Wishlist: 0,
+		Keterangan:       "Oke",
+		Satuan:           "pcs",
+		Slug:             "produk-1",
+		Status:           "aktif",
+		Stok:             10,
+		Terjual:          0,
+		TipeProduk:       "single",
+		UserID:           1,
+		Wishlist:         0,
 	}
 
 	t.Run("success", func(t *testing.T) {
@@ -52,7 +45,6 @@ func Test_GetProduk(t *testing.T) {
 
 		assert.Equal(t, "Produk 1", result[0].NamaProduk)
 		assert.Equal(t, "Elektronik", result[0].Kategori.NamaKategori)
-		assert.Equal(t, "Ilham", result[0].User.NamaLengkap)
 
 		mockProdukRepository.AssertExpectations(t)
 	})
@@ -61,34 +53,26 @@ func Test_GetProduk(t *testing.T) {
 func Test_CreateProduk(t *testing.T) {
 	mockProdukRepository := new(mocks.ProdukRepository)
 	mockProduk := domain.Produk{
-		IDProduk: 1,
+		IDProduk:   1,
 		NamaProduk: "Produk 1",
 		Kategori: domain.Kategori{
 			IDKategoriProduk: 1,
-			NamaKategori: "Elektronik",
+			NamaKategori:     "Elektronik",
 		},
-		Berat: 1000,
-		Diskon: 0,
-		HargaJual: 20000,
-		HargaModal: 10000,
+		Berat:            1000,
+		Diskon:           0,
+		HargaJual:        20000,
+		HargaModal:       10000,
 		KategoriProdukID: 1,
-		Keterangan: "Oke",
-		Satuan: "pcs",
-		Slug: "produk-1",
-		Status: "aktif",
-		Stok: 10,
-		Terjual: 0,
-		TipeProduk: "single",
-		User: domain.User{
-			IDUser: 1,
-			Email: "ilham@gmail.com",
-			NamaLengkap: "Ilham",
-			NomorHp: "085330150827",
-			Password: "ilham",
-			Username: "ilham",
-		},
-		UserID: 1,
-		Wishlist: 0,
+		Keterangan:       "Oke",
+		Satuan:           "pcs",
+		Slug:             "produk-1",
+		Status:           "aktif",
+		Stok:             10,
+		Terjual:          0,
+		TipeProduk:       "single",
+		UserID:           1,
+		Wishlist:         0,
 	}
 
 	t.Run("success", func(t *testing.T) {
@@ -103,7 +87,6 @@ func Test_CreateProduk(t *testing.T) {
 		assert.NoError(t, err)
 		assert.Equal(t, "Produk 1", tempMockProduk.NamaProduk)
 		assert.Equal(t, "Elektronik", tempMockProduk.Kategori.NamaKategori)
-		assert.Equal(t, "Ilham", tempMockProduk.User.NamaLengkap)
 
 		mockProdukRepository.AssertExpectations(t)
 	})
@@ -112,34 +95,26 @@ func Test_CreateProduk(t *testing.T) {
 func Test_UpdateProduk(t *testing.T) {
 	mockProdukRepository := new(mocks.ProdukRepository)
 	mockProduk := domain.Produk{
-		IDProduk: 1,
+		IDProduk:   1,
 		NamaProduk: "Produk 1",
 		Kategori: domain.Kategori{
 			IDKategoriProduk: 1,
-			NamaKategori: "Elektronik",
+			NamaKategori:     "Elektronik",
 		},
-		Berat: 1000,
-		Diskon: 0,
-		HargaJual: 20000,
-		HargaModal: 10000,
+		Berat:            1000,
+		Diskon:           0,
+		HargaJual:        20000,
+		HargaModal:       10000,
 		KategoriProdukID: 1,
-		Keterangan: "Oke",
-		Satuan: "pcs",
-		Slug: "produk-1",
-		Status: "aktif",
-		Stok: 10,
-		Terjual: 0,
-		TipeProduk: "single",
-		User: domain.User{
-			IDUser: 1,
-			Email: "ilham@gmail.com",
-			NamaLengkap: "Ilham",
-			NomorHp: "085330150827",
-			Password: "ilham",
-			Username: "ilham",
-		},
-		UserID: 1,
-		Wishlist: 0,
+		Keterangan:       "Oke",
+		Satuan:           "pcs",
+		Slug:             "produk-1",
+		Status:           "aktif",
+		Stok:             10,
+		Terjual:          0,
+		TipeProduk:       "single",
+		UserID:           1,
+		Wishlist:         0,
 	}
 
 	t.Run("success", func(t *testing.T) {
@@ -159,34 +134,26 @@ func Test_UpdateProduk(t *testing.T) {
 func Test_DeleteProduk(t *testing.T) {
 	mockProdukRepository := new(mocks.ProdukRepository)
 	mockProduk := domain.Produk{
-		IDProduk: 1,
+		IDProduk:   1,
 		NamaProduk: "Produk 1",
 		Kategori: domain.Kategori{
 			IDKategoriProduk: 1,
-			NamaKategori: "Elektronik",
+			NamaKategori:     "Elektronik",
 		},
-		Berat: 1000,
-		Diskon: 0,
-		HargaJual: 20000,
-		HargaModal: 10000,
+		Berat:            1000,
+		Diskon:           0,
+		HargaJual:        20000,
+		HargaModal:       10000,
 		KategoriProdukID: 1,
-		Keterangan: "Oke",
-		Satuan: "pcs",
-		Slug: "produk-1",
-		Status: "aktif",
-		Stok: 10,
-		Terjual: 0,
-		TipeProduk: "single",
-		User: domain.User{
-			IDUser: 1,
-			Email: "ilham@gmail.com",
-			NamaLengkap: "Ilham",
-			NomorHp: "085330150827",
-			Password: "ilham",
-			Username: "ilham",
-		},
-		UserID: 1,
-		Wishlist: 0,
+		Keterangan:       "Oke",
+		Satuan:           "pcs",
+		Slug:             "produk-1",
+		Status:           "aktif",
+		Stok:             10,
+		Terjual:          0,
+		TipeProduk:       "single",
+		UserID:           1,
+		Wishlist:         0,
 	}
 
 	t.Run("not found produk", func(t *testing.T) {
