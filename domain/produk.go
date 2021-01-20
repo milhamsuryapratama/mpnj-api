@@ -16,12 +16,16 @@ type Produk struct {
 	Keterangan       string   `tag:"keterangan" form:"keterangan" json:"keterangan"`
 	TipeProduk       string   `tag:"tipe_produk" form:"tipe_produk" json:"tipe_produk"`
 	UserID           int      `sql:"index" tag:"user_id" form:"user_id" json:"user_id"`
-	User             User     `gorm:"foreignKey:user_id" tag:"user" json:"user"`
 	Wishlist         int      `tag:"wishlist" form:"wishlist" json:"wishlist"`
 	Terjual          int      `tag:"terjual" form:"terjual" json:"terjual"`
 	KategoriProdukID int      `sql:"index" form:"kategori_produk_id" tag:"kategori_produk_id" json:"kategori_produk_id"`
 	Kategori         Kategori `gorm:"foreignKey:kategori_produk_id" tag:"kategori" json:"kategori"`
 	Status           string   `tag:"status" form:"status" json:"status"`
+}
+
+type ProdukWithUser struct {
+	Produk Produk `json:"produk"`
+	User   User   `gorm:"foreignKey:user_id" tag:"user" json:"user"`
 }
 
 // ProdukUsecase ...

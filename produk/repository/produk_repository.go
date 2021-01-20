@@ -20,7 +20,7 @@ func NewProdukRepository(Conn *gorm.DB) domain.ProdukRepository {
 // Get ...
 func (p *ProdukRepository) Get(ctx context.Context) (res []domain.Produk, err error) {
 	var produk []domain.Produk
-	p.Conn.Preload("Kategori").Preload("User").Find(&produk)
+	p.Conn.Preload("Kategori").Find(&produk)
 	return produk, nil
 }
 
