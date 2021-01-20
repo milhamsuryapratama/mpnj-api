@@ -25,6 +25,16 @@ func (Produk) TableName() string {
 	return "produk"
 }
 
+// TableName ...
+func (Transaksi) TableName() string {
+	return "transaksi"
+}
+
+// TableName ...
+func (TransaksiDetail) TableName() string {
+	return "transaksi_detail"
+}
+
 // KategoriUsecase ...
 type KategoriUsecase interface {
 	Get(ctx context.Context) ([]Kategori, error)
