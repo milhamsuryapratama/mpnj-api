@@ -16,7 +16,7 @@ jobs:
       run: docker build . --file Dockerfile --tag go-mpnj:$(date +%s)
     
     - name: Publish to Registry
-      uses: elgohr/Publish-Docker-Github-Action@master
+      uses: elgohr/Publish-Docker-Github-Action@v5
       with:
         ## the name of our image
         name: ilhamsuryapratama/go-mpnj
